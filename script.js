@@ -4,7 +4,15 @@ const postList = document.getElementById('post-list');
 document.addEventListener('DOMContentLoaded', () => {
     const contentDiv = document.querySelector('.content');
     const navLinks = document.querySelectorAll('.nav-link');
-    
+    const loadingOverlay = document.querySelector('.loading-overlay');
+
+    const showLoadingOverlay = () => {
+        loadingOverlay.style.opacity = '1';
+    };
+    const hideLoadingOverlay = () => {
+        loadingOverlay.style.opacity = '0';
+    };
+
     const loadScripts = (url) => {
         if(url.includes('create'))
         {
@@ -12,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         else if(url.includes('index'))
         {
-                for(index = 0; index < 7; index++)
+                for(index = 0; index < 70; index++)
                 {
                     const post = document.createElement('div');
                     post.classList.add('post');
@@ -68,6 +76,8 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const loadPage = (url) => {
+        showLoadingOverlay();
+
         fetch(url)
             .then(response => response.text())
             .then(html => {
@@ -75,11 +85,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 const doc = parser.parseFromString(html, 'text/html');
                 const newContent = doc.querySelector('.content').innerHTML;
 
+                contentDiv.classList.add('fade-out');
+
                 contentDiv.innerHTML = newContent;
                 document.title = doc.title;
 
                 setTimeout(() => {
+                    contentDiv.classList.remove('fade-out');
                     history.pushState({}, '', url);
+                    hideLoadingOverlay();
                 }, 500);
             })
             .then(() => {
@@ -91,6 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
         el.addEventListener('click', (e) => {
             e.preventDefault();
             const url = e.currentTarget.getAttribute('href');
+            showLoadingOverlay();
             loadPage(url);
         })
     });

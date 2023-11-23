@@ -8,18 +8,21 @@
         <link rel="stylesheet" href="style.css">
     </head>
     <body>
+        <div class="loading-overlay">
+            <div class="loading-text">Загрузка...</div>
+        </div>
         <header>
             <h1>Блог с постами</h1>
             <a type="button" class="nav-link" href="index.html">Посты</a>
             <a type="button" class="nav-link" href="createPost.html">Создать пост</a>
         </header>
         <main>
-        <div class="content">
-            <section id="posts">
-                <h2>Посты</h2>
-                <div id="post-list"></div>
-            </section>
-        </div>
+            <div class="content">
+                <section id="posts">
+                    <h2>Посты</h2>
+                    <div id="post-list"></div>
+                </section>
+            </div>
             
         </main>
         <script src="script.js"></script>
