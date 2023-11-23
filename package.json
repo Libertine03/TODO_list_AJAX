@@ -1,0 +1,13 @@
+{
+    "name": "modulesapp",
+    "version": "1.0.0",
+    "scripts": {
+        "dev": "concurrently \"npm run server\" \"npm start\"",
+        "start": "live-server",
+        "server": "json-server -w db.json -p 3000"
+    },
+
+    "devDependencies": {
+        "concurrently": "^8.2.2"
+    }
+}

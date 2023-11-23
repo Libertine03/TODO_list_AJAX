@@ -1,0 +1,6 @@
+{
+    "posts": [
+      { "id": 1, "title": "json-server1", "context": "Decr1" },
+      { "id": 2, "title": "json-server2", "context": "Decr2" }
+    ]
+  }

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Редактирование</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <header>
+            <h1>Блог с постами</h1>
+            <a type="button" class="nav-link" href="index.html">Посты</a>
+            <a type="button" class="nav-link" href="createPost.html">Создать пост</a>
+        </header>
+        <main>
+            <div class="content">
+                <section id="edit-post">
+                    <h2>Отредактировать пост</h2>
+                    <form id="post-form" method="post">
+                        <label for="author">Автор:</label>
+                        <input type="number" id="author" min="1" max="10" required>
+    
+                        <label for="title">Тема:</label>
+                        <input type="text" id="title" required>
+                         
+                        <label for="content">Содержание:</label>
+                        <textarea id="content" required></textarea>
+                         
+                        <input class="btn btn-primary" id="btn-edit" type="submit" value="Сохранить изменения">
+                    </form>
+                </section>
+            </div> 
+        </main>
+        <script src="script.js"></script>
+    </body>
+</html>
