@@ -5,6 +5,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const contentDiv = document.querySelector('.content');
     const navLinks = document.querySelectorAll('.nav-link');
     const loadingOverlay = document.querySelector('.loading-overlay');
+    var important_posts = [];
+    var not_important_posts = [];
 
     const showLoadingOverlay = () => {
         loadingOverlay.style.opacity = '1';
@@ -20,8 +22,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         else if(url.includes('index'))
         {
-                for(index = 0; index < 70; index++)
+            important_posts = [];
+            not_important_posts = [];
+                for(index = 0; index < 5; index++)
                 {
+                    const curr_index = index + 1;
+
                     const post = document.createElement('div');
                     post.classList.add('post');
 
@@ -49,22 +55,67 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
 
                     const importantButton = document.createElement('button');
+                    importantButton.id = curr_index;
                     importantButton.classList.add('btn-important');
                     importantButton.textContent = 'Важное';
                     importantButton.addEventListener('click', () => {
-                        localStorage.setItem('mportant_'+post.id, post.id);
+                        localStorage.setItem('important_'+post.id, post.id);
+                        document.getElementById(post.id).style.background = 'teal';
+                        importantButton.style.display = 'none';
+
+                        deleteFromImportantButton.style.display = 'inline';
+                        post.appendChild(deleteFromImportantButton);
                     });
-                    
+
+                    const deleteFromImportantButton = document.createElement('button');
+                    deleteFromImportantButton.id = curr_index;
+                    deleteFromImportantButton.classList.add('btn-important');
+                    deleteFromImportantButton.textContent = 'Удалить из важного';
+                    deleteFromImportantButton.addEventListener('click', () => {
+
+                        var confirming = confirm("Вы действительно хотите удалить из важного пост?")
+                        if(confirming)
+                        {   
+                            localStorage.removeItem('important_'+post.id, post.id);
+                            document.getElementById(post.id).style.background = '#fdc613';
+                            deleteFromImportantButton.style.display = 'none';
+
+                            importantButton.style.display = 'inline';
+                            post.appendChild(importantButton);
+                        }
+                        else
+                        {
+                            console.log('Отмена подтверждения');
+                        }
+                    });
+
                     post.appendChild(Author);
                     post.appendChild(postTitle);
                     post.appendChild(postContent);
                     post.appendChild(deleteButton);
                     post.appendChild(editButton);
-                    post.appendChild(importantButton);
 
-                    document.getElementById('post-list').appendChild(post);
+                    if(curr_index == localStorage.getItem('important_'+curr_index))
+                    {
+                        post.appendChild(deleteFromImportantButton);
+                        post.style.background = 'teal';
+                        important_posts.push(post);
+                    }
+                    else{
+                        post.appendChild(importantButton);
+                        not_important_posts.push(post);
+                    }
                 }
-            
+
+                for(imp_post = 0; imp_post < important_posts.length; imp_post++)
+                {
+                    document.getElementById('post-list').appendChild(important_posts[imp_post]);
+                }
+                
+                for(not_imp_posts = 0; not_imp_posts < not_important_posts.length; not_imp_posts++)
+                {
+                    document.getElementById('post-list').appendChild(not_important_posts[not_imp_posts]);
+                }
         }
         else if(url.includes('edit'))
         {
