@@ -24,9 +24,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         else if(url.includes('index'))
         {
+            const posts_on_page = 15;
             important_posts = [];
             not_important_posts = [];
-                for(index = 0; index < 15; index++)
+                for(index = 0; index < posts_on_page; index++)
                 {
                     const curr_index = index + 1;
 
@@ -43,14 +44,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     const deleteButton = document.createElement('button');  
                     deleteButton.classList.add('btn-delete');
-                    deleteButton.textContent = 'Удалить';
+                    deleteButton.textContent = 'Delete';
                     deleteButton.addEventListener('click', () => {
                         document.getElementById(post.id).remove();  
                     });
 
                     const editButton = document.createElement('button');
                     editButton.classList.add('btn-edit');
-                    editButton.textContent = 'Редактировать';
+                    editButton.textContent = 'Edit';
                     editButton.addEventListener('click', () => {
                         document.location.href = 'editPost.html';
                         sessionStorage.setItem('current_page', post.id);
@@ -59,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const importantButton = document.createElement('button');
                     importantButton.id = curr_index;
                     importantButton.classList.add('btn-important');
-                    importantButton.textContent = 'Важное';
+                    importantButton.textContent = 'Important';
                     importantButton.addEventListener('click', () => {
                         localStorage.setItem('important_'+post.id, post.id);
                         document.getElementById(post.id).style.background = 'teal';
@@ -72,10 +73,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     const deleteFromImportantButton = document.createElement('button');
                     deleteFromImportantButton.id = curr_index;
                     deleteFromImportantButton.classList.add('btn-important');
-                    deleteFromImportantButton.textContent = 'Удалить из важного';
+                    deleteFromImportantButton.textContent = 'Delete from important';
                     deleteFromImportantButton.addEventListener('click', () => {
 
-                        var confirming = confirm("Вы действительно хотите удалить из важного пост?")
+                        var confirming = confirm("Do you really want to delete an important post?")
                         if(confirming)
                         {   
                             localStorage.removeItem('important_'+post.id, post.id);
