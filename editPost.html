@@ -6,6 +6,7 @@
         <title>Редактирование</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
         <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" title="theme" href="#">
     </head>
     <body>
         <div class="loading-overlay">
@@ -15,6 +16,10 @@
             <h1>Блог с постами</h1>
             <a type="button" class="nav-link" href="index.html">Посты</a>
             <a type="button" class="nav-link" href="createPost.html">Создать пост</a>
+            <div class="theme">
+                <button class="changeThemeDark" id="changeThemeToDark">Тёмная</button>
+                <button class="changeThemeLight" id="changeThemeToLight">Светлая</button>
+            </div>
         </header>
         <main>
             <div class="content">
@@ -22,7 +27,18 @@
                     <h2>Отредактировать пост</h2>
                     <form id="post-form" method="post">
                         <label for="author">Автор:</label>
-                        <input type="number" id="author" min="1" max="10" required>
+                        <select name="authors" id="author">
+                            <option value="Leanne Graham">Leanne Graham</option>
+                            <option value="Ervin Howell">Ervin Howell</option>
+                            <option value="Clementine Bauch">Clementine Bauch</option>
+                            <option value="Patricia Lebsack">Patricia Lebsack</option>
+                            <option value="Chelsey Dietrich">Chelsey Dietrich</option>
+                            <option value="Mrs. Dennis Schulist">Mrs. Dennis Schulist</option>
+                            <option value="Kurtis Weissnat">Kurtis Weissnat</option>
+                            <option value="Nicholas Runolfsdottir V">Nicholas Runolfsdottir V</option>
+                            <option value="Glenna Reichert">Glenna Reichert</option>
+                            <option value="Clementina DuBuque">Clementina DuBuque</option>
+                          </select>
     
                         <label for="title">Тема:</label>
                         <input type="text" id="title" required>

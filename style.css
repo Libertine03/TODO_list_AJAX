@@ -29,10 +29,10 @@ body {
 
 header {
     display: grid;
-    grid-template-columns: 300px 150px 220px;
+    grid-template-columns: 300px 150px 220px 900px;
     grid-template-rows: 1fr;
     gap: 30px;
-    background-color: #333;
+    background-color: #717070;
     color: #fff;
     padding: 20px;
 }
@@ -103,4 +103,26 @@ main {
 }
 .post .btn-important:hover {
     background-color: rgb(1, 171, 154);
+}
+
+.theme {
+    position: fixed;
+    cursor: pointer;
+    top: 5%;
+    right: 10px;
+    transform: translateY(-50%);
+    padding: 10px;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(39,38,40,0.4);
+}
+
+.changeThemeDark {
+    display: block;
+    border-radius: 5px;
+}
+
+.changeThemeLight {
+    display: none;
+    border-radius: 5px;
 }

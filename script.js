@@ -8,6 +8,8 @@ document.addEventListener('DOMContentLoaded', () => {
     var important_posts = [];
     var not_important_posts = [];
 
+    //ChangeTheme();
+
     const showLoadingOverlay = () => {
         loadingOverlay.style.opacity = '1';
     };
@@ -24,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             important_posts = [];
             not_important_posts = [];
-                for(index = 0; index < 5; index++)
+                for(index = 0; index < 15; index++)
                 {
                     const curr_index = index + 1;
 
@@ -128,7 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const loadPage = (url) => {
         showLoadingOverlay();
-
+        ChangeTheme();
         fetch(url)
             .then(response => response.text())
             .then(html => {
@@ -145,7 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     contentDiv.classList.remove('fade-out');
                     history.pushState({}, '', url);
                     hideLoadingOverlay();
-                }, 500);
+                }, 1000);
             })
             .then(() => {
                 loadScripts(url);
@@ -215,8 +217,7 @@ function getAnyPost(page_index)
         if (this.readyState === 4 && this.status === 200) {
             const post = JSON.parse(xhr.responseText);
 
-            //getAuthor(page_index);
-            document.getElementById('author').value = post.userId; 
+            document.getElementById('author').selectedIndex = post.userId - 1; 
             document.getElementById('title').value = post.title;
             document.getElementById('content').value = post.body;
         }
@@ -249,6 +250,55 @@ function sendDataToServer(button_id)
         .then(json => {
             console.log('response:' +JSON.stringify(json));
         })
-        .then(setTimeout(() => window.location.href='index.html', 3000));
+        .then(setTimeout(() => window.location.href='index.html', 6000));
     });
+}
+
+function ChangeTheme()
+{
+    GetActiveTheme();
+    const changeThemeToDark = document.getElementById('changeThemeToDark');
+    const changeThemeToLight = document.getElementById('changeThemeToLight');
+ 
+    changeThemeToDark.addEventListener('click', () => {
+        localStorage.setItem('theme', 'dark');
+
+        changeThemeToDark.style.display = 'none';
+        changeThemeToLight.style.display = 'block';
+
+        document.body.style.backgroundColor = 'rgb(31, 31, 31)'
+        document.querySelector('header').style.backgroundColor = 'black';
+    });
+
+    changeThemeToLight.addEventListener('click', () => {
+        localStorage.setItem('theme', 'light');
+
+        changeThemeToLight.style.display = 'none';
+        changeThemeToDark.style.display = 'block';
+
+        document.body.style.backgroundColor = 'white'
+        document.querySelector('header').style.backgroundColor = '#717070';
+    });
+}
+
+function GetActiveTheme()
+{
+    const current_theme = localStorage.getItem('theme');
+
+    if(current_theme === 'dark')
+    {
+        changeThemeToDark.style.display = 'none';
+        changeThemeToLight.style.display = 'block';
+
+        document.body.style.backgroundColor = 'rgb(31, 31, 31)'
+        document.querySelector('header').style.backgroundColor = 'black';
+    }
+    else
+    {
+        changeThemeToLight.style.display = 'none';
+        changeThemeToDark.style.display = 'block';
+        
+        document.body.style.backgroundColor = 'white'
+        document.querySelector('header').style.backgroundColor = '#717070';
+    }
 }
