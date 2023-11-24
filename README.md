@@ -2,7 +2,7 @@
 a site with posts using AJAX technology and data from jsonplaceholder. (HTML, CSS, JavaScript)
 
 To start working with the site, you need to download the repository, install node.js and enter the following two commands:
-![Commands to start](https://github.com/Libertine03/TODO_list_AJAX/blob/Feature/Images/Commands_to_start.png)
+<br />![Commands to start](https://github.com/Libertine03/TODO_list_AJAX/blob/Feature/Images/Commands_to_start.png)
 
 ## Site Features
 **Main page**
