@@ -3,31 +3,50 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Создать пост</title>
+        <title>Create post</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
         <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" title="theme" href="#">
     </head>
     <body>
+        <div class="loading-overlay">
+            <div class="loading-text">Loading...</div>
+        </div>
         <header>
-            <h1>Блог с постами</h1>
-            <a type="button" class="nav-link" href="index.html">Посты</a>
-            <a type="button" class="nav-link" href="createPost.html">Создать пост</a>
+            <h1>Blog with posts</h1>
+            <a type="button" class="nav-link" href="index.html">Posts</a>
+            <a type="button" class="nav-link" href="createPost.html">Create post</a>
+            <div class="theme">
+                <button class="changeThemeDark" id="changeThemeToDark">Dark</button>
+                <button class="changeThemeLight" id="changeThemeToLight">Light</button>
+            </div>
         </header>
         <main>
             <div class="content">
                 <section id="add-post">
-                    <h2>Добавить новый пост</h2>
+                    <h2>Add new post</h2>
                     <form id="post-form" method="post">
                         <label for="author">Автор:</label>
-                        <input type="number" id="author" min="1" max="10" required>
+                        <select name="authors" id="author">
+                            <option value="Leanne Graham">Leanne Graham</option>
+                            <option value="Ervin Howell">Ervin Howell</option>
+                            <option value="Clementine Bauch">Clementine Bauch</option>
+                            <option value="Patricia Lebsack">Patricia Lebsack</option>
+                            <option value="Chelsey Dietrich">Chelsey Dietrich</option>
+                            <option value="Mrs. Dennis Schulist">Mrs. Dennis Schulist</option>
+                            <option value="Kurtis Weissnat">Kurtis Weissnat</option>
+                            <option value="Nicholas Runolfsdottir V">Nicholas Runolfsdottir V</option>
+                            <option value="Glenna Reichert">Glenna Reichert</option>
+                            <option value="Clementina DuBuque">Clementina DuBuque</option>
+                          </select>
     
-                        <label for="title">Тема:</label>
+                        <label for="title">Theme:</label>
                         <input type="text" id="title" required>
                          
-                        <label for="content">Содержание:</label>
+                        <label for="content">Content:</label>
                         <textarea id="content" required></textarea>
                          
-                        <input class="btn btn-primary" id="btn-submit" type="submit" value="Опубликовать">
+                        <input class="btn btn-primary" id="btn-submit" type="submit" value="Publish">
                     </form>
                 </section>
             </div> 

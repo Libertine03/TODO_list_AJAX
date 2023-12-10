@@ -4,7 +4,19 @@ const postList = document.getElementById('post-list');
 document.addEventListener('DOMContentLoaded', () => {
     const contentDiv = document.querySelector('.content');
     const navLinks = document.querySelectorAll('.nav-link');
-    
+    const loadingOverlay = document.querySelector('.loading-overlay');
+    var important_posts = [];
+    var not_important_posts = [];
+
+    //ChangeTheme();
+
+    const showLoadingOverlay = () => {
+        loadingOverlay.style.opacity = '1';
+    };
+    const hideLoadingOverlay = () => {
+        loadingOverlay.style.opacity = '0';
+    };
+
     const loadScripts = (url) => {
         if(url.includes('create'))
         {
@@ -12,8 +24,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         else if(url.includes('index'))
         {
-                for(index = 0; index < 7; index++)
+            const posts_on_page = 15;
+            important_posts = [];
+            not_important_posts = [];
+                for(index = 0; index < posts_on_page; index++)
                 {
+                    const curr_index = index + 1;
+
                     const post = document.createElement('div');
                     post.classList.add('post');
 
@@ -27,36 +44,81 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     const deleteButton = document.createElement('button');  
                     deleteButton.classList.add('btn-delete');
-                    deleteButton.textContent = 'Удалить';
+                    deleteButton.textContent = 'Delete';
                     deleteButton.addEventListener('click', () => {
                         document.getElementById(post.id).remove();  
                     });
 
                     const editButton = document.createElement('button');
                     editButton.classList.add('btn-edit');
-                    editButton.textContent = 'Редактировать';
+                    editButton.textContent = 'Edit';
                     editButton.addEventListener('click', () => {
                         document.location.href = 'editPost.html';
                         sessionStorage.setItem('current_page', post.id);
                     });
 
                     const importantButton = document.createElement('button');
+                    importantButton.id = curr_index;
                     importantButton.classList.add('btn-important');
-                    importantButton.textContent = 'Важное';
+                    importantButton.textContent = 'Important';
                     importantButton.addEventListener('click', () => {
-                        localStorage.setItem('mportant_'+post.id, post.id);
+                        localStorage.setItem('important_'+post.id, post.id);
+                        document.getElementById(post.id).style.background = 'teal';
+                        importantButton.style.display = 'none';
+
+                        deleteFromImportantButton.style.display = 'inline';
+                        post.appendChild(deleteFromImportantButton);
                     });
-                    
+
+                    const deleteFromImportantButton = document.createElement('button');
+                    deleteFromImportantButton.id = curr_index;
+                    deleteFromImportantButton.classList.add('btn-important');
+                    deleteFromImportantButton.textContent = 'Delete from important';
+                    deleteFromImportantButton.addEventListener('click', () => {
+
+                        var confirming = confirm("Do you really want to delete an important post?")
+                        if(confirming)
+                        {   
+                            localStorage.removeItem('important_'+post.id, post.id);
+                            document.getElementById(post.id).style.background = '#fdc613';
+                            deleteFromImportantButton.style.display = 'none';
+
+                            importantButton.style.display = 'inline';
+                            post.appendChild(importantButton);
+                        }
+                        else
+                        {
+                            console.log('Отмена подтверждения');
+                        }
+                    });
+
                     post.appendChild(Author);
                     post.appendChild(postTitle);
                     post.appendChild(postContent);
                     post.appendChild(deleteButton);
                     post.appendChild(editButton);
-                    post.appendChild(importantButton);
 
-                    document.getElementById('post-list').appendChild(post);
+                    if(curr_index == localStorage.getItem('important_'+curr_index))
+                    {
+                        post.appendChild(deleteFromImportantButton);
+                        post.style.background = 'teal';
+                        important_posts.push(post);
+                    }
+                    else{
+                        post.appendChild(importantButton);
+                        not_important_posts.push(post);
+                    }
                 }
-            
+
+                for(imp_post = 0; imp_post < important_posts.length; imp_post++)
+                {
+                    document.getElementById('post-list').appendChild(important_posts[imp_post]);
+                }
+                
+                for(not_imp_posts = 0; not_imp_posts < not_important_posts.length; not_imp_posts++)
+                {
+                    document.getElementById('post-list').appendChild(not_important_posts[not_imp_posts]);
+                }
         }
         else if(url.includes('edit'))
         {
@@ -68,6 +130,8 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const loadPage = (url) => {
+        showLoadingOverlay();
+        ChangeTheme();
         fetch(url)
             .then(response => response.text())
             .then(html => {
@@ -75,12 +139,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 const doc = parser.parseFromString(html, 'text/html');
                 const newContent = doc.querySelector('.content').innerHTML;
 
+                contentDiv.classList.add('fade-out');
+
                 contentDiv.innerHTML = newContent;
                 document.title = doc.title;
 
                 setTimeout(() => {
+                    contentDiv.classList.remove('fade-out');
                     history.pushState({}, '', url);
-                }, 500);
+                    hideLoadingOverlay();
+                }, 1000);
             })
             .then(() => {
                 loadScripts(url);
@@ -91,6 +159,7 @@ document.addEventListener('DOMContentLoaded', () => {
         el.addEventListener('click', (e) => {
             e.preventDefault();
             const url = e.currentTarget.getAttribute('href');
+            showLoadingOverlay();
             loadPage(url);
         })
     });
@@ -149,8 +218,7 @@ function getAnyPost(page_index)
         if (this.readyState === 4 && this.status === 200) {
             const post = JSON.parse(xhr.responseText);
 
-            //getAuthor(page_index);
-            document.getElementById('author').value = post.userId; 
+            document.getElementById('author').selectedIndex = post.userId - 1; 
             document.getElementById('title').value = post.title;
             document.getElementById('content').value = post.body;
         }
@@ -183,6 +251,55 @@ function sendDataToServer(button_id)
         .then(json => {
             console.log('response:' +JSON.stringify(json));
         })
-        .then(setTimeout(() => window.location.href='index.html', 3000));
+        .then(setTimeout(() => window.location.href='index.html', 6000));
     });
+}
+
+function ChangeTheme()
+{
+    GetActiveTheme();
+    const changeThemeToDark = document.getElementById('changeThemeToDark');
+    const changeThemeToLight = document.getElementById('changeThemeToLight');
+ 
+    changeThemeToDark.addEventListener('click', () => {
+        localStorage.setItem('theme', 'dark');
+
+        changeThemeToDark.style.display = 'none';
+        changeThemeToLight.style.display = 'block';
+
+        document.body.style.backgroundColor = 'rgb(31, 31, 31)'
+        document.querySelector('header').style.backgroundColor = 'black';
+    });
+
+    changeThemeToLight.addEventListener('click', () => {
+        localStorage.setItem('theme', 'light');
+
+        changeThemeToLight.style.display = 'none';
+        changeThemeToDark.style.display = 'block';
+
+        document.body.style.backgroundColor = 'white'
+        document.querySelector('header').style.backgroundColor = '#717070';
+    });
+}
+
+function GetActiveTheme()
+{
+    const current_theme = localStorage.getItem('theme');
+
+    if(current_theme === 'dark')
+    {
+        changeThemeToDark.style.display = 'none';
+        changeThemeToLight.style.display = 'block';
+
+        document.body.style.backgroundColor = 'rgb(31, 31, 31)'
+        document.querySelector('header').style.backgroundColor = 'black';
+    }
+    else
+    {
+        changeThemeToLight.style.display = 'none';
+        changeThemeToDark.style.display = 'block';
+        
+        document.body.style.backgroundColor = 'white'
+        document.querySelector('header').style.backgroundColor = '#717070';
+    }
 }
